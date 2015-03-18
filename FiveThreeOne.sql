@@ -68,3 +68,25 @@ insert into workout (cycleid, movementid, date, week, weightlifted, amountofreps
 insert into workout (cycleid, movementid, date, week, weightlifted, amountofreps) values (1, 2, STR_TO_DATE('08-01-2014', '%m-%d-%Y'), "5/3/1", 245.0, 10); 
 insert into workout (cycleid, movementid, date, week, weightlifted, amountofreps) values (1, 3, STR_TO_DATE('08-04-2014', '%m-%d-%Y'), "5/3/1", 135.0, 7); 
 insert into workout (cycleid, movementid, date, week, weightlifted, amountofreps) values (1, 4, STR_TO_DATE('08-06-2014', '%m-%d-%Y'), "5/3/1", 300.0, 9); 
+
+-- Cycle 2
+insert into cycle values ();
+-- Cycle 3
+insert into cycle values ();
+-- Cycle 4
+insert into cycle values ();
+-- Cycle 5
+insert into cycle values ();
+-- Cycle 6
+insert into cycle values ();
+-- Cycle 7
+insert into cycle values ();
+-- Cycle 8 
+insert into cycle values ();
+-- Cycle 9
+insert into cycle values ();
+-- Cycle 10
+insert into cycle values ();
+
+--Created from parse_trainingmaxes.py
+source trainingmaxes.sql;
