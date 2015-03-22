@@ -17,7 +17,7 @@ Create Table movement (
 Create Table trainingmax(
 	CycleID int(11) NOT NULL,
 	MovementID int(11) NOT NULL,
-	Weight DOUBLE NOT NULL,
+	Weight DECIMAL(6,2) NOT NULL,
 	Notes TINYTEXT,
 	UnitOfMeasure tinytext,
 	FOREIGN KEY (MovementID) REFERENCES movement(ID),
@@ -28,15 +28,27 @@ Create Table trainingmax(
 Create Table workout(
 	CycleID int(11) NOT NULL,
 	MovementID int(11) NOT NULL,
-	`Date` Date,
+	`Date` Date NOT NULL,
 	Week varchar(7) NOT NULL,
-	WeightLifted DOUBLE NOT NULL,
+	WeightLifted DECIMAL(6,2) NOT NULL,
 	AmountOfReps tinyint NOT NULL,
 	Estimated1RM DOUBLE,
 	FOREIGN KEY (MovementID) REFERENCES movement(ID),
 	FOREIGN KEY (CycleID) REFERENCES cycle(`number`),
 	PRIMARY KEY (CycleID, MovementID, Week)
 );
+
+CREATE TRIGGER set_estimated1rm BEFORE INSERT ON workout FOR EACH ROW SET NEW.Estimated1RM = NEW.WeightLifted * NEW.AmountOfReps * 0.0333 + NEW.WeightLifted;
+
+DELIMITER //
+CREATE TRIGGER set_default_unit_of_measure BEFORE INSERT ON trainingmax
+FOR EACH ROW 
+BEGIN 
+	IF NEW.UnitOfMeasure IS NULL THEN
+		SET New.UnitOfMeasure = 'lbs';
+	END IF;
+END;//
+delimiter ;
 
 -- Movements
 insert into movement (name) values ("Bench");
@@ -48,7 +60,7 @@ insert into movement (name) values ("Deadlift");
 insert into cycle values ();
 
 -- Cycle 1 training maxes
-insert into trainingmax (cycleid, movementid, weight) values (1, 1, 220.5);
+insert into trainingmax (cycleid, movementid, weight, unitofmeasure) values (1, 1, 220.5, 'kg');
 insert into trainingmax (cycleid, movementid, weight) values (1, 2, 256.5);
 insert into trainingmax (cycleid, movementid, weight) values (1, 3, 144);
 insert into trainingmax (cycleid, movementid, weight) values (1, 4, 315);
@@ -88,5 +100,9 @@ insert into cycle values ();
 -- Cycle 10
 insert into cycle values ();
 
---Created from parse_trainingmaxes.py
+-- Created from parse_trainingmaxes.py
 source trainingmaxes.sql;
+
+-- Created from parse_workouts.py
+source workouts.sql;
+
